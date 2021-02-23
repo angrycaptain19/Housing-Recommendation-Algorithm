@@ -28,12 +28,7 @@ for label in listing_data.columns:
 #host_since转为到现在(2020/12/1)的时间
 def to_today(date):
     present = datetime.datetime.strptime('2020-12-1',"%Y-%m-%d")
-    if date<present:
-        num=(present-date).days
-        return num
-    elif date>=present:
-        num=(date-present).days
-        return num
+    return (present-date).days if date<present else (date-present).days
 listing_data['host_since'] = pd.to_datetime(listing_data['host_since'])
 listing_data['host_time'] = listing_data['host_since'].apply(lambda x:to_today(x))
 listing_data['first_review'] = pd.to_datetime(listing_data['first_review'])
@@ -63,8 +58,7 @@ listing_data['reviews_per_month'].fillna(0, inplace = True)
 # 字符串列表转化为长度
 def getLen(x):
     li = x[2:-2].split(',')
-    length = len(li)
-    return length
+    return len(li)
 listing_data["num_of_host_verifications"] = listing_data.host_verifications.apply(lambda x:getLen(x))
 listing_data["num_of_amenities"] = listing_data.amenities.apply(lambda x:getLen(x))
 
